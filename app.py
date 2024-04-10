@@ -31,6 +31,7 @@ model_path = "model/models--vilm--vinallama-2.7b-chat/snapshots/b31d5f1306494b2b
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 
+@st.cache_resource
 def load_model(model_path):
     bnb_config = BitsAndBytesConfig(
         load_in_4bit=True,

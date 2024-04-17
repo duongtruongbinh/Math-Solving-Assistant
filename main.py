@@ -1,46 +1,57 @@
+import os
+
 import streamlit as st
-import google.generativeai as genai
+from dotenv import load_dotenv
+import google.generativeai as gen_ai
 
-# Cấu hình API key cho Google Generative AI
-genai.configure(api_key='AIzaSyDCphh5DyMK8ZLCZKQM9MfhkmfY34CBKfI')
 
-# Kiểm tra và thiết lập mô hình Gemini nếu chưa có trong session_state
-if "gemini_model" not in st.session_state:
-    st.session_state["gemini_model"] = "gemini-pro"
+# Load environment variables
+load_dotenv()
 
-st.title("Chatbox")
+# Configure Streamlit page settings
+st.set_page_config(
+    page_title="Chat with Gemini-Pro!",
+    page_icon=":brain:",  # Favicon emoji
+    layout="centered",  # Page layout option
+)
 
-# Khởi tạo lịch sử chat nếu chưa có
-if "messages" not in st.session_state:
-    st.session_state["messages"] = []
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-# Hiển thị các tin nhắn trong lịch sử
-for message in st.session_state["messages"]:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+# Set up Google Gemini-Pro AI model
+gen_ai.configure(api_key=GOOGLE_API_KEY)
+model = gen_ai.GenerativeModel('gemini-pro')
 
-# Xử lý nhập liệu từ người dùng
-prompt = st.chat_input("Enter chatbot...")
-if prompt:
-    # Hiển thị tin nhắn của người dùng
-    with st.chat_message("user"):
-        st.markdown(prompt)
-    # Thêm tin nhắn người dùng vào lịch sử chat
-    st.session_state["messages"].append({"role": "user", "content": prompt})
 
-    # Gọi API để tạo phản hồi
-    response = genai.generate_content(
-        model=st.session_state["gemini_model"],
-        messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state["messages"]],
-        stream=True,
-    )
+# Function to translate roles between Gemini-Pro and Streamlit terminology
+def translate_role_for_streamlit(user_role):
+    if user_role == "model":
+        return "assistant"
+    else:
+        return user_role
 
-    # Hiển thị phản hồi của trợ lý
+
+# Initialize chat session in Streamlit if not already present
+if "chat_session" not in st.session_state:
+    st.session_state.chat_session = model.start_chat(history=[])
+
+
+# Display the chatbot's title on the page
+st.title("🤖 Gemini Pro - ChatBot")
+
+# Display the chat history
+for message in st.session_state.chat_session.history:
+    with st.chat_message(translate_role_for_streamlit(message.role)):
+        st.markdown(message.parts[0].text)
+
+# Input field for user's message
+user_prompt = st.chat_input("Ask Gemini-Pro...")
+if user_prompt:
+    # Add user's message to chat and display it
+    st.chat_message("user").markdown(user_prompt)
+
+    # Send user's message to Gemini-Pro and get the response
+    gemini_response = st.session_state.chat_session.send_message(user_prompt)
+
+    # Display Gemini-Pro's response
     with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        full_response = ""
-        for part in response:
-            full_response += part.choices[0].delta.get("content", " ")
-        message_placeholder.markdown(full_response)
-    # Thêm phản hồi trợ lý vào lịch sử chat
-    st.session_state["messages"].append({"role": "assistant", "content": full_response})
+        st.markdown(gemini_response.text)

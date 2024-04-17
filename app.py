@@ -26,18 +26,21 @@ from transformers import (
 )
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 model_path = "model/models--vilm--vinallama-2.7b-chat/snapshots/b31d5f1306494b2bf10ecb0c6031077af3f5b39a"
+peft_model_path = 'model\models--duongtruongbinh--vinallama-peft-2.7b-chat\snapshots\e90135fd01b4e813a99397be1fa1564af3b55714'
+PEFT_MODEL = "duongtruongbinh/vinallama-peft-2.7b-chat"
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
+bnb_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+    bnb_4bit_compute_dtype=torch.bfloat16,
+    load_in_8bit_fp32_cpu_offload=True
+)
 
 
 @st.cache_resource
 def load_model(model_path):
-    bnb_config = BitsAndBytesConfig(
-        load_in_4bit=True,
-        bnb_4bit_use_double_quant=True,
-        bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16,
-        load_in_8bit_fp32_cpu_offload=True
-    )
+
     model = AutoModelForCausalLM.from_pretrained(
         model_path,
         device_map="auto",
@@ -69,10 +72,45 @@ def load_model(model_path):
     return model, tokenizer
 
 
+@st.cache_resource
+def load_fineturned_model(peft_model_path):
+    config = PeftConfig.from_pretrained(peft_model_path)
+    model = AutoModelForCausalLM.from_pretrained(
+        config.base_model_name_or_path,
+        return_dict=True,
+        quantization_config=bnb_config,
+        device_map="auto",
+        trust_remote_code=True
+    )
+    tokenizer = AutoTokenizer.from_pretrained(config.base_model_name_or_path)
+    tokenizer.pad_token = tokenizer.eos_token
+    model = PeftModel.from_pretrained(model, peft_model_path)
+    model.gradient_checkpointing_enable()
+    model = prepare_model_for_kbit_training(model)
+    config = LoraConfig(
+        r=16,
+        lora_alpha=32,
+        target_modules=[
+            "q_proj",
+            "up_proj",
+            "o_proj",
+            "k_proj",
+            "down_proj",
+            "gate_proj",
+            "v_proj"
+        ],
+        lora_dropout=0.05,
+        bias="none",
+        task_type="CAUSAL_LM"
+    )
+
+    model = get_peft_model(model, config)
+    return model, tokenizer
+
+
 def generate_response(prompt, model, tokenizer, device):
     # Tokenize input prompt
     encoding = tokenizer(prompt, return_tensors="pt").to(device)
-    print(device)
     # Generate response
     generation_config = model.generation_config
     generation_config.max_new_tokens = 200
@@ -96,7 +134,8 @@ def main():
     st.title("Vinallama Chatbot")
 
     # Load model
-    model, tokenizer = load_model(model_path)
+    # model, tokenizer = load_model(model_path)
+    model, tokenizer = load_fineturned_model(peft_model_path)
 
     user_input = st.text_input("Hãy nhập gì đó để chat với tôi")
     prompt = """

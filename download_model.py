@@ -27,24 +27,24 @@ from transformers import (
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-model_path = "model/models--vilm--vinallama-2.7b-chat/snapshots/b31d5f1306494b2bf10ecb0c6031077af3f5b39a"
-
+# model_path = "model/models--vilm--vinallama-2.7b-chat/snapshots/b31d5f1306494b2bf10ecb0c6031077af3f5b39a"
+model_name = 'vilm/vinallama-2.7b-chat'
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_use_double_quant=True,
     bnb_4bit_quant_type="nf4",
     bnb_4bit_compute_dtype=torch.bfloat16
 )
-# model = AutoModelForCausalLM.from_pretrained(
-#     model_name,
-#     device_map="auto",
-#     trust_remote_code=True,
-#     quantization_config=bnb_config,
-#     cache_dir="./model"
-# )
-# tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir="./model")
-# tokenizer.pad_token = tokenizer.eos_token
-PEFT_MODEL = "duongtruongbinh/vinallama-peft-2.7b-chat"
+model = AutoModelForCausalLM.from_pretrained(
+    model_name,
+    device_map="auto",
+    trust_remote_code=True,
+    quantization_config=bnb_config,
+    cache_dir="./model"
+)
+tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir="./model")
+tokenizer.pad_token = tokenizer.eos_token
+
 # config = PeftConfig.from_pretrained(PEFT_MODEL, cache_dir="./model")
 # model = AutoModelForCausalLM.from_pretrained(
 #     config.base_model_name_or_path,
@@ -60,11 +60,6 @@ PEFT_MODEL = "duongtruongbinh/vinallama-peft-2.7b-chat"
 # tokenizer.pad_token = tokenizer.eos_token
 
 # model = PeftModel.from_pretrained(model, PEFT_MODEL, cache_dir="./model")
-local_model_path = './model/models--duongtruongbinh--vinallama-peft-2.7b-chat'
-config = PeftConfig.from_pretrained(local_model_path)
-model = PeftModel.from_pretrained(local_model_path, config=config)
-tokenizer = AutoTokenizer.from_pretrained(local_model_path)
-tokenizer.pad_token = tokenizer.eos_token
 
 
 def print_trainable_parameters(model):
@@ -103,32 +98,32 @@ config = LoraConfig(
 )
 
 model = get_peft_model(model, config)
-print_trainable_parameters(model)
-generation_config = model.generation_config
-generation_config.max_new_tokens = 200
-generation_config.do_sample = True
-generation_config.temperature = 0.7
-generation_config.top_p = 0.7
-generation_config.num_return_sequences = 1
-generation_config.pad_token_id = tokenizer.eos_token_id
-generation_config.eos_token_id = tokenizer.eos_token_id
-prompt = """
-<|im_start|>system
-Bạn là một trợ lí AI hữu ích. Hãy trả lời người dùng một cách chính xác.
-<|im_end|>
-<|im_start|>user
-Mô tả Đà Lạt
-<|im_end|>
-<|im_start|>assistant
-""".strip()
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
+# print_trainable_parameters(model)
+# generation_config = model.generation_config
+# generation_config.max_new_tokens = 200
+# generation_config.do_sample = True
+# generation_config.temperature = 0.7
+# generation_config.top_p = 0.7
+# generation_config.num_return_sequences = 1
+# generation_config.pad_token_id = tokenizer.eos_token_id
+# generation_config.eos_token_id = tokenizer.eos_token_id
+# prompt = """
+# <|im_start|>system
+# Bạn là một trợ lí AI hữu ích. Hãy trả lời người dùng một cách chính xác.
+# <|im_end|>
+# <|im_start|>user
+# Mô tả Đà Lạt
+# <|im_end|>
+# <|im_start|>assistant
+# """.strip()
+# device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-encoding = tokenizer(prompt, return_tensors="pt").to(device)
-with torch.inference_mode():
-    outputs = model.generate(
-        input_ids=encoding.input_ids,
-        attention_mask=encoding.attention_mask,
-        generation_config=generation_config
-    )
+# encoding = tokenizer(prompt, return_tensors="pt").to(device)
+# with torch.inference_mode():
+#     outputs = model.generate(
+#         input_ids=encoding.input_ids,
+#         attention_mask=encoding.attention_mask,
+#         generation_config=generation_config
+#     )
 
-print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+# print(tokenizer.decode(outputs[0], skip_special_tokens=True))

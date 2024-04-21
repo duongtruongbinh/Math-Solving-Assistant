@@ -113,8 +113,9 @@ def generate_response(prompt, model, tokenizer, device):
     encoding = tokenizer(prompt, return_tensors="pt").to(device)
     # Generate response
     generation_config = model.generation_config
-    generation_config.max_new_tokens = 200
-    # generation_config.temperature = 0.7
+    generation_config.max_new_tokens = 300
+    generation_config.do_sample = True
+    generation_config.temperature = 0.7
     generation_config.top_p = 0.7
     generation_config.num_return_sequences = 1
     generation_config.pad_token_id = tokenizer.eos_token_id
@@ -134,8 +135,8 @@ def main():
     st.title("Vinallama Chatbot")
 
     # Load model
-    # model, tokenizer = load_model(model_path)
-    model, tokenizer = load_fineturned_model(peft_model_path)
+    model, tokenizer = load_model(model_path)
+    # model, tokenizer = load_fineturned_model(peft_model_path)
 
     user_input = st.text_input("Hãy nhập gì đó để chat với tôi")
     prompt = """

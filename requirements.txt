@@ -1,3 +1,4 @@
-python-dotenv==1.0.1
-google-generativeai==0.3.2
-streamlit==1.30.0
+google-generativeai==0.4.0
+pillow==10.2.0
+streamlit==1.28.2
+streamlit-option-menu==0.3.12

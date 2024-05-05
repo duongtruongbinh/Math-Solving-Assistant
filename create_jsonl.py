@@ -1,3 +1,6 @@
+"""Tạo tệp JSONL từ tệp JSON của MetaMathQA-40K.
+"""
+
 import json
 import pandas as pd
 import jsonlines

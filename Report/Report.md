@@ -1,0 +1,567 @@
+# Đồ án cuối kì Nhập môn Học máy
+
+# Mục lục
+- [1. Chatbot](#1Chatbot)
+    - 1.1 - Chatbot là gì?
+    - 1.2 - Chatbot hoạt động như thế nào ?
+    - 1.3 - Phân loại Chatbot
+    - 1.4 - Sự phát triển của chatbot
+- [2. Xử lý ngôn ngữ tự nhiên (NLP)](#2Xử-lý-ngôn-ngữ-tự-nhiên-NLP1)
+    - 2.1 - Khái niệm
+    - 2.2 - Các bài toán cơ bản trong NLP
+    - 2.3 - Các ứng dụng của NLP
+    - 2.4 - Ứng dụng của NLP trong Chatbot
+
+- [3. Transformer (Transformer Neural Network)](#3Transformer-Transformer-Neural-Network1)
+    - 3.1 - Kiến trúc
+    - 3.2 - Encoder
+        - 3.2.1 - Nhúng đầu vào (Input Embedding)
+        - 3.2.2 - Tầng self-attention
+        - 3.2.3 - Multi-Head Attention
+        - 3.2.4 - Mạng nơ-ron truyền thẳng (Feed-Forward Neural Networks)
+        - 3.2.5 - Thêm & Chuẩn hóa (Add & Normalize)
+        - 3.2.6 - Đầu ra của khối mã hóa cuối cùng
+    - 3.3 - Decoder
+- [4. LaMDA](#4LaMDA1)
+    - 4.1 - LaMDA pretraining
+    - 4.2 - LaMDA fine-tuning
+    - 4.3 - Ứng dụng của LaMDA
+- [5. OCR](#5-ocr)
+    - 5.1 - Giới thiệu về OCR
+    - 5.2 - Tesseract
+    - 5.3 - Cơ chế hoạt động
+- [6. LLMs](#6-large-language-model-llm)
+    - 6.1 - Khái niệm
+    - 6.2 - Cách huấn luyện LLM 
+    - 6.3 - Ứng dụng của LLM
+- [7. Gemini 1.0](#7-gemini-10)
+    - 7.1 - Kiến trúc Mô hình
+    - 7.2 - Huấn luyện và Ứng dụng
+    - 7.3 - Cải tiến và Ứng dụng Công nghệ
+        - 7.3.1 - Tính Năng Xử Lý Âm Thanh
+        - 7.3.2 - Tính Năng Hiểu Biết Hình Ảnh
+        - 7.3.3 - Tính Năng Tương Tác Đa Phương Tiện
+    - 7.4 - Tương Lai của Gemini
+- [8. Sản phẩm của nhóm](#8-sản-phẩm-của-nhóm)
+    - 8.1 Tổng quan sản phẩm
+    - 8.2 Chức năng của sản phẩm
+    - 8.3 Đánh giá sản phẩm
+    - 8.4 Khó khăn và hướng phát triển
+- [9. Tài liệu tham khảo](#9-tài-liệu-tham-khảo)
+
+# 1. Chatbot
+## 1.1 Chatbot là gì ?
+
+Chatbot là một chương trình máy tính được tạo ra để giao tiếp và tương tác với con người thông qua trí tuệ nhân tạo. Thông thường, chatbot được sử dụng thông qua ứng dụng nhắn tin để trao đổi với người dùng và có khả năng trả lời các câu hỏi mà họ đặt ra. Chatbot thường được phân loại thành hai loại dựa trên cách chúng tương tác với người dùng: Auditory (âm thanh) và Textual (tin nhắn).
+
+## 1.2 Chatbot hoạt động như thế nào ?
+Chatbot tương tác với con người bằng âm thanh hoặc văn bản và qua các platform sau:
+- **Translator**: Dịch yêu cầu của user, giúp máy tính hiểu được yêu cầu người dùng cần thực hiện → quyết định việc chatbot có thông minh hay không.
+- **Processor**: Xử lý yêu cầu, thành phần này giúp khả năng của chatbot không bị giới hạn, máy tính làm được gì thì chatbot cũng làm được như vậy.
+- **Responden**t: Nhận output và đóng gói gửi trả lại messenger platform, trả lại cho người dùng kết quả.
+
+![image](chatbot1.2.png)
+
+## 1.3 Phân loại Chatbot
+- **Task-oriented dialogue systems**:
+
+    - TODs là loại Chatbot được thiết kế để thực hiện các tác vụ cụ thể trong một lĩnh vực nhất định như: mua vé máy bay, cung cấp thông tin về đại dịch Covid-19... Chúng thường được các doanh nghiệp phát triển để cung cấp dịch vụ hỗ trợ khách hàng 24/7. 
+
+    - Ví dụ: Sani là Chatbot có khả năng trò chuyện với người dùng để giúp họ tìm kiếm quán cà phê ở Hà Nội với một số tiêu chí như: không gian yên tĩnh, đồ uống ngon, hẹn hò, học tập... Hoặc tìm quán cà phê gần một địa điểm cụ thể nào đó ở Hà Nội: gần Hồ Tây, đại học Bách Khoa, quận Cầu Giấy… Sani được thiết kế để có thể thực hiện một số tác vụ liên quan đến “quán cà phê”, nó không thể trả lời chính xác khi người dùng hỏi về một lĩnh vực khác.
+
+- **Intelligent Personal Assistants**:
+
+    - IPAs là loại Chatbot đóng vai trò như một trợ lý cá nhân để giúp người dùng thực hiện một số công việc thường ngày của họ. Ví dụ trợ lý cá nhân Siri của Apple có thể thực hiện các tác vụ như: thực hiện cuộc gọi, gửi tin nhắn, tìm quán ăn, quản lý lịch hẹn....Tương đồng với Siri còn có một số trợ lý cá nhân khác như Cortana của Microsoft, Google Assistant, Alexa của Amazon. Đối với những yêu cầu nằm ngoài khả năng của mình, các trợ lý thường thực thi hành động Web search như một hành động thay thế.
+
+    - IPAs có khả năng thực hiện nhiều tác vụ khác nhau mà không bị giới hạn trong một lĩnh vực cụ thể và nó mang lại cho người dùng cảm giác luôn bên cạnh để giúp đỡ họ khi cần. Để làm được điều này IPAs thường được tích hợp trên các thiết bị cá nhân như điện thoại thông minh, máy tính cá nhân, thiết bị smart home, đồng hồ thông minh và được cho phép quyền truy cập vào thông tin cá nhân của người dùng như: danh bạ, email, lịch, hành vi của người dùng trên thiết bị...
+
+- **Chit-chat dialogue systems**:
+
+    - Không giống như TODs và IPAs được thiết kế để giúp người dùng hoàn thành tác vụ một cách hiệu quả và nhanh chóng. Chit-chat dialogue systems(CDDs) được thiết kế để trở thành một người “bạn ảo” đồng hành lâu dài với người dùng, lắng nghe họ tâm sự và cùng thảo luận về mọi chủ đề trong cuộc sống.
+
+    - Ví dụ Xiaoice Chatbot được Microsoft phát triển cho thị trường Trung Quốc và ra mắt năm 2014. Xiaoice được thiết kế mô phỏng theo tính cách của một cô gái 18 tuổi với khả năng ứng xử khéo léo trong giao tiếp(chỉ số EQ cao), hiểu biết về nhiều lĩnh vực kể cả các sự kiện vừa mới diễn ra(chỉ số IQ cao). Chính vì vậy mà Xiaoice đã trở thành người bạn tâm sự của giới trẻ tại Trung Quốc. Hiện nay Xiaoice có hơn 650 triệu người dùng và được triển khai trên hơn 450 triệu thiết bị thông minh. Đây là một trong những Chatbot thành công nhất trên thị trường hiện nay khi Xiaoice tách ra thành công ty riêng năm 2020 và được định giá lên tới 1 tỉ đô la.
+
+    - Tuy khả năng mà các hệ thống CDDs mang lại rất ấn tượng nhưng nó đang gặp vấn đề trong việc kiểm soát nội dung khi thảo luận về các chủ đề nhạy cảm như phân biệt chủng tộc, tôn giáo, chiến tranh, chính trị hoặc đưa ra nội không phù hợp với lứa tuổi vị thành niên. Xiaoice đã phải tạm ngưng phát hành ở thị Mỹ, Ấn Độ và bị gỡ khỏi ứng dụng QQ của Tencent khi đưa ra những phản hồi gây tranh cãi khi thảo luận về những nội dung nhạy cảm này.
+
+    - Một số Chit-chat dialogue systems phổ biến khác là: *Kuki(Mitsuku)* được phát triển bởi Pandorabots, *Meena* là một Chatbot được phát triển bởi Google và được công bố kết quả nghiên cứu vào tháng 01/2020, *BlenderBot* được phát triển bởi Facebook và *Replika* được phát triển với công ty startup tên là Luka
+
+## 1.4 Sự phát triển của chatbot
+
+### 1.4.1 Lịch sử của Chatbot
+Chatbot đầu tiên ra đời năm 1966, tên là Eliza và là một chương trình máy tính của Joseph Weizenbaum (Viện Công nghệ Massachusetts, Mỹ). Thực ra Eliza là nỗ lực của Joseph nhằm tạo ra một liệu pháp điều trị tâm lý mới bằng máy tính. Đây là chương trinh giả làm bác sĩ tâm lý, có thê trả lời những câu hỏi đơn giản. Nếu câu nào không hiểu, máy sẽ lấy một từ khóa trong câu trả lời của bệnh nhân và bảo họ giải thích thêm. Mặc dù còn có sự hạn chế về nhiều mặt, Eliza vẫn được xem là tiền đề để phát triển Chatbot như ngày nay.
+
+Thời gian gần đây, Chatbot đang trỗi dậy mạnh mẽ. Nếu năm 2016, mọi người vẫn còn bỡ ngỡ với Chatbot, thì đến nay nó đã thật sự phát triển trong nhiều ứng ứng dụng.
+
+### 1.4.2 - Chatbot đang phát triển như thế nào?
+Chatbot đang phát triển nhờ sự tập trung vào trí tuệ nhân tạo (AI). Doanh nghiệp ngày nay đang chú trọng vào phát triển chatbot để thay đổi cách họ tương tác với khách hàng. Chatbot giúp tự động hoá và cá nhân hoá khách hàng, giảm sự phụ thuộc vào sự tương tác giữa khách hàng và nhân viên. Tuy nhiên, chatbot vẫn còn sơ khai và không thể thay thế hoàn toàn con người. Để xây dựng chatbot hiệu quả, doanh nghiệp cần thu thập đủ dữ liệu để chatbot hiểu và tạo ra các câu trả lời phù hợp. Chatbot đang phát triển mạnh mẽ nhờ nhu cầu ngày càng tăng của người tiêu dùng về trải nghiệm kỹ thuật số 24/7, và được xem là một phần của sự thúc đẩy cho trí tuệ nhân tạo trong tương lai.
+
+### 1.4.3 Tương lai của chatbot
+Trong tương lai, các chatbot AI có thể phát triển hơn và tương tác tốt hơn dựa trên nhận dạng giọng nói, như việc sử dụng rộng rãi các chatbot như Alexa, Google Home hay Siri. Tuy nhiên, việc chatbot có trí tuệ riêng và tương tác trực tiếp với con người vẫn còn rất xa xôi. Mặc dù đa số chatbot hiện nay chỉ có thể phản hồi các lệnh cơ bản theo kịch bản được thiết kế từ trước, triển khai chúng trong môi trường kinh doanh có thể mang lại nhiều lợi ích về chi phí và thời gian vận hành. Tuy nhiên, việc phát triển chatbot vẫn đòi hỏi đầu tư hàng tỷ đô la hàng năm và nguồn nhân lực lớn. Mục tiêu cuối cùng của chatbot là tạo ra giá trị lớn trong môi trường doanh nghiệp và cho người tiêu dùng, nhưng việc chatbot có thể hoàn toàn thay thế con người vẫn còn rất xa vời.
+
+
+# 2. Xử lý ngôn ngữ tự nhiên (NLP)
+## 2.1 Khái niệm 
+Xử lý ngôn ngữ tự nhiên (NLP) ra đời từ những năm 1940, là một nhánh của trí tuệ nhân tạo, tập trung vào nghiên cứu sự tương tác giữa máy tính và ngôn ngữ tự nhiên của con người. Mục tiêu của lĩnh vực này là giúp máy tính hiểu và thực hiện hiệu quả những nhiệm vụ liên quan đến ngôn ngữ của con người, như tương tác giữa người và máy, cải thiện hiệu quả giao tiếp giữa con người với con người, hoặc đơn giản là nâng cao hiệu quả xử lý văn bản và lời nói.
+
+Xử lý ngôn ngữ tự nhiên có thể được chia ra thành hai nhánh lớn, không hoàn toàn độc lập, bao gồm xử lý tiếng nói (speech processing) và xử lý văn bản (text processing). Xử lý tiếng nói tập trung nghiên cứu, phát triển các thuật toán, chương trình máy tính xử lý ngôn ngữ của con người ở dạng tiếng nói (dữ liệu âm thanh). Các ứng dụng quan trọng của xử lý tiếng nói bao gồm nhận dạng tiếng nói và tổng hợp tiếng nói. Nếu như nhận dạng tiếng nói là chuyển ngôn ngữ từ dạng tiếng nói sang dạng văn bản thì ngược lại, tổng hợp tiếng nói chuyển ngôn ngữ từ dạng văn bản thành tiếng nói. Xử lý văn bản tập trung vào phân tích dữ liệu văn bản. Các ứng dụng quan trọng của xử lý văn bản bao gồm tìm kiếm và truy xuất thông tin, dịch máy, tóm tắt văn bản tự động, hay kiểm lỗi chính tả tự động. Xử lý văn bản đôi khi được chia tiếp thành hai nhánh nhỏ hơn bao gồm hiểu văn bản và sinh văn bản. Nếu như hiểu liên quan tới các bài toán phân tích văn bản thì sinh liên quan tới nhiệm vụ tạo ra văn bản mới như trong các ứng dụng về dịch máy hoặc tóm tắt văn bản tự động.
+
+## 2.2 Các bài toán cơ bản trong NLP 
+### 2.2.1 Mô hình hóa ngôn ngữ (Language modelling)
+Mô hình hóa ngôn ngữ (LM) gán một xác suất cho bất kỳ chuỗi từ nào. Về cơ bản, trongbài toán này, ta cần dự đoán từ tiếp theo xuất hiện theo trình tự, dựa trên lịch sử của các từ đã xuất hiện trước đó. LM rất quan trọng trong các ứng dụng khác nhau của NLP, và là lý do tại sao máy móc có thể hiểu được thông tin định tính. Một số ứng dụng của Mô hình hóa ngôn ngữ bao gồm: nhận dạng giọng nói, nhận dạng ký tự quang học, nhận dạng chữ viết tay, dịch máy và sửa lỗi chính tả.
+
+### 2.2.2 Phân loại văn bản (Text classification)
+Phân loại văn bản gán các danh mục được xác định trước cho văn bản dựa trên nội dung của nó. Cho đến nay, phân loại văn bản là ứng dụng phổ biến nhất của NLP, được sử dụng để xây dựng các công cụ khác nhau như trình phát hiện thư rác và chương trình phân tích cảm xúc.
+
+### 2.2.3 Trích xuất thông tin (Information extraction)
+Trích xuất thông tin (IE) tự động trích xuất thông tin có liên quan từ các tài liệu văn bản không có cấu trúc và / hoặc bán cấu trúc. Ví dụ về các loại tài liệu này bao gồm lịch sự kiện từ email hoặc tên của những người được đề cập trong một bài đăng trên mạng xã hội.
+
+### 2.2.4 Truy xuất thông tin (Information retrieval)
+Google là một loại hệ thống Truy xuất Thông tin (IR) phổ biến nhất mà chúng ta thường sử dụng. IR làm nhiệm vụ tìm kiếm các tài liệu có liên quan từ một bộ dữ liệu lớn các tài liệu liên quan đến truy vấn do người dùng thực hiện.
+
+### 2.2.5 Tác tử phần mềm hội thoại (Conversational agent)
+Tác tử phần mềm hội thoại thuộc AI hội thoại, liên quan đến việc xây dựng các hệ thống đối thoại mô phỏng các tương tác của con người. Các ví dụ phổ biến về AI hội thoại bao gồm Alexa, Siri, Google Home, Cortana, hay trợ lý ảo ViVi. Các công nghệ như chatbot cũng được hỗ trợ bởi  tác tử phần mềm hội thoại và ngày càng phổ biến trong các doanh nghiệp.
+
+### 2.2.6 Tóm tắt văn bản (Text summarization)
+Tự động tóm tắt là quá trình rút ngắn một tập hợp dữ liệu để tạo một tập hợp con đại diện cho thông tin quan trọng nhất hoặc có liên quan trong nội dung gốc
+
+### 2.2.7 Hỏi đáp (Question answering)
+Hỏi đáp là bài toán xây dựng các hệ thống có thể tự động trả lời cho các câu hỏi do con người đặt ra bằng ngôn ngữ tự nhiên.
+
+### 2.2.8 Dịch máy (Machine translation)
+Dịch máy (MT) là một nhánh con của ngôn ngữ học tính toán liên quan đến việc chuyển đổi một đoạn văn bản từ ngôn ngữ này sang ngôn ngữ khác. Một ứng dụng phổ biến của loại này là Google Dịch.
+
+### 2.2.9 Mô hình hóa chủ đề (Topic modelling)
+Mô hình hóa chủ đề là một kỹ thuật Học máy không giám sát giúp khám phá cấu trúc chủ đề của một bộ tài liệu lớn. Ứng dụng NLP này là một công cụ khá phổ biến, được sử dụng trên nhiều lĩnh vực khác nhau – như Văn học, và Tin sinh học.
+
+## 2.3 Các ứng dụng của NLP
+### 2.3.1. Công cụ dịch thuật 
+Google Dịch là một minh chứng cho ứng dụng rộng rãi của NLP. Máy dịch ngôn ngữ hiệu quả không chỉ dừng lại ở việc thay thế từ đơn giản, mà nhắm đến nắm bắt chính xác ý nghĩa và giọng điệu của ngôn ngữ đầu vào khi truyền tải văn bản có cùng mục đích và tác động ở ngôn ngữ đầu ra. Các công cụ dịch thuật hiện đại cho thấy sự tiến bộ đáng chú ý về độ chính xác, giải quyết những thách thức trong việc dịch thuật giữa các ngôn ngữ.
+
+### 2.3.2 Trợ lý ảo và chatbot 
+Các trợ lý ảo như Siri của Apple và Alexa của Amazon sử dụng tính năng nhận dạng giọng nói để hiểu lệnh thoại, trong khi ngôn ngữ tự nhiên cho phép chúng phản hồi một cách thích hợp. Chatbot thực hiện các tác vụ tương tự để phản hồi văn bản đã nhập. Những hệ thống tốt nhất này học hỏi theo các dấu hiệu của ngữ cảnh trong yêu cầu của con người, đưa ra phản hồi được cải thiện dần theo thời gian. Mục tiêu tiếp theo của các ứng dụng này liên quan đến việc trả lời câu hỏi bằng những câu trả lời phù hợp và hữu ích bằng ngôn từ của chúng.
+
+### 2.3.3 Phân tích cảm xúc trên MXH 
+NLP đã phát triển thành một công cụ quan trọng để trích xuất thông tin ẩn giấu từ các kênh mạng xã hội. Phân tích tình cảm kiểm tra ngôn ngữ trong các bài đăng, phản hồi, đánh giá, v.v. trên mạng xã hội để phân biệt thái độ và cảm xúc đối với sản phẩm, chương trình khuyến mãi và sự kiện. Các doanh nghiệp tận dụng thông tin này để thiết kế sản phẩm, chiến dịch quảng cáo và đưa ra quyết định chiến lược.
+
+### 2.3.4 Tóm tắt văn bản 
+Quá trình tóm tắt văn bản, được hỗ trợ bởi công nghệ NLP, xử lý khối lượng lớn văn bản số để tạo ra các bản tóm tắt cho các chỉ mục, cơ sở dữ liệu nghiên cứu hoặc trình đọc văn bản nhanh chóng. Các ứng dụng tóm tắt văn bản hàng đầu kết hợp lý luận ngữ nghĩa và NLG để cung cấp ngữ cảnh và kết luận, nâng cao tính hữu ích của các bản tóm tắt.
+
+### 2.3.5 Phát hiện thư rác 
+Mặc dù tính năng phát hiện thư rác (spam) có thể không được coi là một ứng dụng nổi bật NLP, nhưng các công nghệ hàng đầu tận dụng khả năng phân loại văn bản của NLP để xem xét kỹ lưỡng các email để tìm các mẫu ngôn ngữ cho thấy mail spam hoặc phishing. Điều này bao gồm việc xác định việc sử dụng quá nhiều thuật ngữ tài chính, ngữ pháp ít đặc trưng, ngôn ngữ mang tính đe dọa, mức độ khẩn cấp không phù hợp, tên công ty viết sai chính tả, v.v. Việc phát hiện thư rác đã được các chuyên gia xem là vấn đề “gần như đã được giải quyết”, mặc dù trải nghiệm của từng cá nhân có thể khác nhau.
+
+## 2.4 Ứng dụng của NLP trong Chatbot
+
+- **Phân loại ý định của người dùng:**
+
+Thường thì, người dùng thường truy cập hệ thống Chatbot với mong muốn hệ thống sẽ đưa ra hỗ trợ về một vấn đề cụ thể. Để cung cấp hỗ trợ chính xác, Chatbot cần xác định ý định (intent) của người dùng. Để xây dựng một mô hình phân loại intent, chúng ta cần một tập dữ liệu huấn luyện chứa các cách diễn đạt khác nhau cho mỗi ý định. Ví dụ, khi hỏi về lĩnh vực báo chí, người dùng có thể sử dụng các cách diễn đạt sau đây:
+
+    - "Lĩnh vực báo chí có bao nhiêu thủ tục?"
+    - "Lĩnh vực báo chí gồm những thủ tục gì?"
+    - "Có những thủ tục nào trong lĩnh vực báo chí?"
+    - "Những thủ tục nào thuộc lĩnh vực báo chí?"
+
+Bước tạo dữ liệu huấn luyện cho bài toán phân loại intent là một trong những công việc quan trọng nhất khi phát triển hệ thống Chatbot và có ảnh hưởng lớn đến chất lượng sản phẩm của hệ thống Chatbot trong tương lai. Công việc này đòi hỏi thời gian và công sức khá lớn.
+
+- **Trích xuất thông tin:**
+
+Bên cạnh việc xác định intent trong câu hội thoại của người dùng, chúng ta cần trích xuất các thông tin cần thiết trong đó. Các thông tin cần trích xuất trong một câu hội thoại thường là các thực thể thuộc về một loại nào đó.
+
+    - Câu hội thoại: Thủ tục cho phép họp báo trong nước gồm có bao nhiêu bước thực hiện?
+    - Câu có các thực thể được xác định là:
+
+*[Thủ tục cho phép họp báo trong nước]<sub>thủ tục</sub> gồm có [bao nhiêu]<sub>số lượng</sub> [bước thực hiện]<sub>cách thức</sub>*
+
+Trong câu trên có 3 thực thể (nằm trong các dấu [ ]) với các loại thực thể tương ứng (được viết với font chữ nhỏ hơn ở dưới).
+
+- **Quản lý hội thoại:** 
+
+Trong các cuộc hội thoại dài (long conversation) giữa người và Chatbot, Chatbot sẽ cần ghi nhớ những thông tin về ngữ cảnh (context) hay quản lý các trạng thái hội thoại (dialog State). Vấn đề quản lý hội thoại (dialog management) khi đó là quan trọng để đảm bảo việc trao đổi giữa người và máy được thông suốt.
+
+- **Tách từ:** 
+
+Là một bước quan trọng không thể thiếu trong việc tiền xử lý dữ liệu, nhằm xác định các từ có trong văn bản. Trong tiếng Anh, các từ được tách biệt với nhau bởi khoảng trắng, do đó việc tách từ rất đơn giản. Trong tiếng Việt, các từ không được tách biệt bởi khoảng trắng, mà phụ thuộc rất nhiều vào ngữ cảnh của câu trong tiếng Việt và các từ đơn hay đa âm tiết.
+
+
+# 3.Transformer (Transformer Neural Network)
+
+## 3.1 - Kiến trúc
+
+Kiến trúc Transformer, được giới thiệu trong bài báo [Attention is all you need](https://papers.nips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf), là một mô hình học sâu được phát triển để giải quyết nhiều vấn đề trong lĩnh vực xử lý ngôn ngữ tự nhiên và xử lý âm thanh, bao gồm dịch máy, nhận dạng giọng nói và chuyển đổi từ văn bản sang giọng nói. Trong quá khứ, các nhiệm vụ này thường dựa vào các mạng nơ-ron tuần tự (RNNs), nhưng nhược điểm là chúng xử lý dữ liệu từng phần một, dẫn đến tốc độ chậm và khó khăn trong việc nắm bắt các mối liên hệ xa giữa các từ trong câu. Ngược lại, Transformer không sử dụng cơ chế tuần tự này mà thay vào đó áp dụng cơ chế self-attention, cho phép mô hình quan sát đồng thời các từ khác nhau trong quá trình mã hóa và giải mã để hiểu rõ mối liên hệ giữa chúng.
+
+Cấu trúc của Transformer bao gồm hai phần chính là các bộ mã hóa và giải mã:
+- **Bộ mã hóa**: Gồm một chuỗi của sáu khối mã hóa, mỗi khối bao gồm hai tầng chính là tầng self-attention và mạng nơ-ron truyền thẳng (feed-forward).
+- **Bộ giải mã**: Cũng bao gồm sáu khối, mỗi khối của bộ giải mã có ba tầng, gồm tầng self-attention, tầng attention giữa mã hóa và giải mã để tập trung vào các thông tin đầu vào từ bộ mã hóa, và cuối cùng là mạng nơ-ron truyền thẳng.
+
+![transformer-model](https://machinelearningmastery.com/wp-content/uploads/2021/08/attention_research_1.png)
+
+Mô hình này cải thiện đáng kể hiệu quả và chính xác trong các ứng dụng NLP nhờ khả năng xử lý song song dữ liệu và phát hiện mối liên hệ giữa các phần tử trong dữ liệu một cách hiệu quả.
+## 3.2 - Mã hóa (Encoder)
+### 3.2.1 - Nhúng đầu vào (Input Embedding)
+Đầu vào của khối mã hóa đầu tiên là các vector embedding của các từ trong câu. Các embeddings được tạo bằng cách kết hợp vector **word embedding** với vector  **positional embedding**. Vector word embedding từ biểu diễn ý nghĩa của từ, trong khi vector positional embedding biểu diễn vị trí và khoảng cách giữa các từ trong câu, được tính theo công thức:
+
+![pe-fomula](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiHSCFt_-aVDEPYcBi97KRWXUtHln8ZIaBh9kqjVMUh1x16PWlWESWLJFh75PXnjc6oN85yLG_F-C-J237cRJFkdWxntUxkmyP5Jqj4cVRhEkE7N967KtCdFinrcWty21xJWfyU6FinYPo/s1600/pose.png)
+
+Trong đó, $d_{\text{model}}$ là số chiều của vector, pos là số vị trí,  i là chỉ số của chiều trong vector. 
+### 3.2.2 - Tầng self-attention
+
+Tại mỗi khối mã hóa, đầu vào được đưa qua một tầng self-attention. Tầng này hoạt động bằng cách tính toán các trọng số attention cho mỗi từ trong câu, dựa trên mối quan hệ giữa từ đó và các từ khác trong câu. Quá trình này giúp mô hình tập trung vào các từ quan trọng trong câu và hiểu rõ mối liên hệ giữa chúng.
+
+### 3.2.3 - Multi-Head Attention
+Mô hình Transformer sử dụng cơ chế multi-head attention để tăng cường khả năng học và biểu diễn các mối quan hệ phức tạp trong dữ liệu. Bằng cách này, mỗi từ sẽ được biểu diễn bằng nhiều cách khác nhau thông qua các "đầu attention" khác nhau, sau đó kết hợp lại để tạo ra một biểu diễn tổng thể cho từ đó.
+
+### 3.2.4 - Mạng nơ-ron truyền thẳng (Feed-Forward Neural Networks)
+Sau khi qua các tầng attention, các biểu diễn của các từ được đưa vào một mạng nơ-ron truyền thẳng để tạo ra các biểu diễn mới và phức tạp hơn. Mạng nơ-ron truyền thẳng này giúp mô hình học được các mối quan hệ không tuyến tính và biểu diễn dữ liệu một cách hiệu quả.
+
+### 3.2.5 - Thêm & Chuẩn hóa (Add & Normalize)
+Cuối cùng, các biểu diễn từ các tầng attention và mạng nơ-ron truyền thẳng được cộng lại với đầu vào ban đầu của khối mã hóa, sau đó được chuẩn hóa để đảm bảo rằng các giá trị không bị biến đổi quá nhiều và duy trì được tính nguyên bản của dữ liệu.
+
+### 3.2.6 - Đầu ra của khối mã hóa cuối cùng
+Sau khi qua tất cả các khối mã hóa, các biểu diễn cuối cùng của các từ trong câu sẽ được sử dụng để tính toán các trọng số attention khi giải mã hoặc để tạo ra kết quả cuối cùng của mô hình.
+
+## 3.3 - Bộ Giải Mã (Decoder)
+
+Các layer trong khối giải mã được thiết kế tương tự như khối mã hóa, nhưng có một số điểm khác biệt:
+
+- Đầu vào của lớp tự chú ý ở lần đầu tiên bao gồm vector nhúng của một ký tự `[start]` và vector nhúng vị trí.
+- Lớp tự chú ý chỉ tính toán từ thông tin từ các từ trước đó.
+- Lớp chú ý giữa mã hóa và giải mã chỉ tính toán vector \(q\) dựa trên đầu ra của lớp tự chú ý, vector \(k\) và \(v\) được lấy từ đầu ra của khối mã hóa.
+- Quá trình tính toán được thực hiện cho đến khi bộ giải mã dự đoán được ký tự kết thúc `[end]`.
+- Đầu ra của lớp FFN cuối cùng được đưa vào một lớp tuyến tính để chuyển đổi thành một vector có số chiều bằng số từ trong từ điển. Vector này sau đó được đưa qua một hàm softmax để biến chúng thành một phân phối xác suất, với từ có xác suất cao nhất được chọn làm dự đoán.
+
+Như vậy, kiến trúc Transformer đem lại một cách tiếp cận mạnh mẽ và hiệu quả cho việc xử lý ngôn ngữ tự nhiên và các nhiệm vụ liên quan.
+
+# 4. LaMDA
+
+LaMDA (Language Model for Dialogue Applications) là một mô hình ngôn ngữ dựa trên kiến trúc Transformer, được phát triển bởi Google. Transformer, một tiêu chuẩn trong xử lý ngôn ngữ tự nhiên hiện đại, cho phép mô hình hiểu và sinh ra ngôn ngữ một cách hiệu quả. Transformer hoạt động dựa trên cơ chế self-attention, giúp mô hình xác định được phần nào của dữ liệu đầu vào là quan trọng cho mỗi bước dự đoán. Trái với các mô hình ngôn ngữ truyền thống được huấn luyện để dự đoán văn bản tiếp theo, LaMDA được tối ưu để tham gia vào các cuộc đối thoại có ngữ cảnh, có khả năng tiếp nhận và tiếp tục các đề tài được đưa ra trong cuộc trò chuyện. LaMDA được huấn luyện để phát triển các kỹ năng đối thoại như duy trì ngữ cảnh, phản ứng với các thay đổi trong chủ đề, và thậm chí đưa ra các phản hồi sáng tạo và hài hước khi cần thiết.
+
+Google giải thích rằng LaMDA có quy trình đào tạo gồm hai giai đoạn, bao gồm tiền huấn luyện (pretraining) và tinh chỉnh (fine-tuning).
+
+## 4.1 - LaMDA Pretraining
+
+Trong giai đoạn tiền huấn luyện, mô hình được huấn luyện để dự đoán từ tiếp theo trong một câu. LaMDA sử dụng Transformer làm kiến trúc mô hình, với các tham số [[6]](https://ar5iv.labs.arxiv.org/html/2201.08239) được cấu hình như sau:
+- Số lớp: 64
+- Số chiều vector biểu diễn từ ($d_{\text{model}}$): 8192
+- Số chiều của các tầng Feed-Forward ($d_{\text{ff}}$): 65536
+- Số đầu vào và đầu ra cho mỗi head (h): 128
+- Kích thước của vector truy vấn và vector khóa (dk = dv): 128
+
+Dữ liệu tiền huấn luyện bao gồm 2.97 tỷ tài liệu, 1.12 tỷ hộp thoại, và 13.39 tỷ lời thoại, tổng cộng là 1.56 nghìn tỷ từ. Hơn 90% bộ dữ liệu này là tiếng Anh, đến từ các nguồn dữ liệu công khai trên internet. Quá trình tiền huấn luyện mô hình sinh ngôn ngữ của LaMDA được minh họa trong hình dưới đây:
+
+![LaMDA Pretraining](https://ar5iv.labs.arxiv.org/html/2201.08239/assets/Model_diagram.png)
+
+## 4.2 - LaMDA Fine-Tuning
+
+Trong giai đoạn tinh chỉnh, mô hình LaMDA được huấn luyện để kết hợp giữa nhiệm vụ sinh câu phản hồi và phân loại chúng. Cụ thể, mô hình được huấn luyện để sinh ra câu phản hồi dựa trên ngữ cảnh và phân loại chúng dựa trên mức độ an toàn và chất lượng.
+
+Mô hình sinh câu phản hồi của LaMDA được huấn luyện để tạo ra câu phản hồi tiếp theo dựa trên dữ liệu hội thoại giữa con người và mô hình. Một bộ phân loại được huấn luyện đồng thời để đánh giá mức độ an toàn và chất lượng của các câu phản hồi.
+
+Hộp thoại được tạo ra bằng cách đề xuất một số phản hồi dựa trên ngữ cảnh, sau đó mô hình phân loại dựa trên mức độ an toàn và chất lượng. Các phản hồi không an toàn hoặc chất lượng kém sẽ bị lọc ra. Cuối cùng, câu phản hồi tốt nhất sẽ được chọn để trả lời cho người dùng.
+
+![LaMDA Fine-Tuning](https://cohere.com/_next/image?url=https%3A%2F%2Fcohere-ai.ghost.io%2Fcontent%2Fimages%2F2023%2F12%2FBlog-Banner_1.png&w=1920&q=75)
+
+LaMDA đã học được một số sắc thái giúp phân biệt cuộc trò chuyện mở với các dạng ngôn ngữ khác. Một trong những sắc thái đó là sự nhạy cảm. Cơ bản như: Liệu câu trả lời có phù hợp với ngữ cảnh cuộc trò chuyện không? Chẳng hạn, nếu ai đó nói:
+
+Ví dụ: nếu ai đó nói: 
+
+    Tôi mới bắt đầu học guitar.
+
+Chúng ta có thể mong đợi người khác phản hồi như sau:
+
+    Thật thú vị! Mẹ tôi cũng có một chiếc Martin cũ mà bà ấy rất thích chơi.
+
+Câu trả lời này hợp lý, xét theo tình huống đã nêu. Nhưng sự hợp lý không phải là tất cả những gì làm nên một câu trả lời tốt. Rốt cuộc, cụm từ `nghe thật tuyệt` là một câu trả lời hợp lý nhất trong tất cả những câu trả lời, giống như cách `tôi không biết` là câu trả lời hợp lý cho hầu hết các câu hỏi. Các câu trả lời thỏa đáng thường cụ thể, liên quan rõ ràng đến ngữ cảnh của cuộc trò chuyện. Với ví dụ bên trên, câu trả lời đó vừa hợp lý vừa cụ thể.
+
+## 4.3 Ứng dụng của LaMDA
+
+LaMDA có nhiều ứng dụng trong lĩnh vực trợ lý ảo, dịch vụ khách hàng, và các hệ thống tương tác người-máy. Nó có thể được sử dụng để:
+
+- Cải thiện chất lượng các cuộc hội thoại tự động, làm cho chúng trở nên tự nhiên và hữu ích hơn.
+- Hỗ trợ người dùng trong việc tìm kiếm thông tin hoặc giải quyết vấn đề cụ thể thông qua hội thoại.
+- Đào tạo trợ lý ảo có khả năng thực hiện các cuộc đàm thoại phức tạp và duy trì ngữ cảnh qua nhiều lần tương tác.
+
+
+
+# 5. OCR
+## 5.1 Giới thiệu về OCR
+Nhận dạng ký tự quang học (OCR) là một phần mềm máy tính giúp chuyển đổi hình ảnh của chữ viết tay hoặc chữ đánh máy thành văn bản. Đầu vào là các tập tin hình ảnh, thường là từ máy quét, và đầu ra là các tập tin văn bản chứa nội dung từ hình ảnh đó. Nó được phát triển từ các lĩnh vực như nhận dạng mẫu, trí tuệ nhân tạo và thị giác máy. Dù việc nghiên cứu vẫn tiếp tục, nhưng OCR đã trở thành một ứng dụng thực tiễn với các kỹ thuật đã được kiểm chứng.
+
+Ban đầu, nhận dạng ký tự quang học và nhận dạng ký tự số được xem xét là hai lĩnh vực khác nhau. Tuy nhiên, vì ít ứng dụng thực tế sử dụng các kỹ thuật quang học, thuật ngữ "nhận dạng ký tự quang học" bây giờ thường bao gồm cả nhận dạng ký tự số.
+
+Trước khi thực hiện nhận dạng, hệ thống cần được huấn luyện với các mẫu ký tự cụ thể. Các hệ thống "thông minh" ngày nay có khả năng nhận dạng cao với hầu hết các phông chữ hiện đại. Một số hệ thống còn có thể tái tạo định dạng của tài liệu gốc, bao gồm hình ảnh, cột, bảng biểu và các thành phần không phải là văn bản.
+
+Hiện nay, ngoài việc nhận dạng các kí tự alphabet thông thường, đã có nhiều phần mềm có khả năng nhận dạng được các chữ cái và dấu tiếng Việt hay các loại chữ tượng hình. Một số phần mềm nhận dạng chữ cái tiếng Việt nổi tiếng như VnDOCR 4.0 hay VietOCR là một ứng dụng phát triển từ mã nguồn mở Tesseract - ocr do Google tài trợ.
+
+## 5.2 Tesseract
+Tesseract là một công cụ nhận dạng ký tự quang học (OCR) được phân phối dưới dạng mã nguồn mở Apache 2.0. Tesseract được nghiên cứu và phát triển tại hãng Hewlett Packet (HP)
+trong khoảng từ năm 1984 đến 1994. Vào năm 1995, Tesseract nằm trong nhóm ba bộ nhận dạng OCR
+đứng đầu về độ chính xác khi tham gia trong hội nghị thường niên của tổ chức UNLV.
+
+Ban đầu, Tesseract là một dự án nghiên cứu tại phòng thí nghiệm HP ở Bristol từ năm 1984 đến 1994. Dự án này sau đó đã đạt được một số tiến bộ về độ chính xác nhận dạng, nhưng không thể trở thành sản phẩm hoàn chỉnh vì sự cồng kềnh và phức tạp của nó.
+
+Sau khi chuyển sang mã nguồn mở và được tài trợ bởi Google vào năm 2005, Tesseract đã tiếp tục được phát triển và cải tiến. Phiên bản mới nhất là Tesseract 4.0, được cải thiện với một bộ nhận dạng ký tự mới dựa trên mạng thần kinh LSTM, tập trung vào việc nhận diện dòng văn bản. Đồng thời, nó vẫn hỗ trợ động cơ OCR cổ điển của Tesseract 3.0, hoạt động bằng cách nhận diện các mẫu ký tự.
+
+## 5.3 Cơ chế hoạt động
+
+Một quy trình hoạt động của Tesseract được diễn ra như sau:
+1. Phân tích vùng kết nối (Connected Component Analysis): Hình ảnh được phân tích để xác định các vùng kết nối, gọi là "Blob", chứa các ký tự hoặc phần của chúng. Điều này giúp Tesseract nhận dạng và phân biệt các ký tự trong hình ảnh.
+
+2. Phân tích dòng và ký tự: Các blob sau đó được phân tích để xác định các dòng và ký tự trong văn bản. Tesseract sử dụng thông tin về vị trí và kích thước của các blob để phân tích dòng và ký tự. Các blob có thể được ghép lại để tạo thành các dòng, và các đường cơ sở được tìm kiếm để xác định vị trí của các dòng.
+
+3. Nhận dạng dòng và ký tự: Sau khi các dòng và ký tự đã được xác định, Tesseract tiến hành nhận dạng chúng thành văn bản. Các dòng ký tự được chia thành từng từ dựa trên các ký tự phân cách, và sau đó văn bản được nhận dạng từ các từ này.
+
+4. Lặp lại và cải tiến kết quả: Quá trình nhận dạng có thể được lặp lại để cải thiện kết quả. Tesseract có thể đánh giá và phân tích lại kết quả nhận dạng, và sử dụng thông tin từ các kết quả trước đó để cải thiện độ chính xác của kết quả cuối cùng.
+
+5. Xử lý các trường hợp đặc biệt: Cuối cùng, Tesseract xử lý các trường hợp đặc biệt như các dấu cách không rõ ràng và việc định vị ký tự in hoa nhỏ. Điều này giúp đảm bảo kết quả cuối cùng là chính xác và đáng tin cậy.
+
+![Tesseract Processing](https://tnquangblog.wordpress.com/wp-content/uploads/2017/12/tesseractocrrecignitionflow.png)
+
+
+
+# 6. Large Language Model (LLM)
+## 6.1 Khái niệm
+Language Model (LM) - mô hình ngôn ngữ là một mô hình xác suất của ngôn ngữ tự nhiên có thể tạo ra các từ dựa trên dữ liệu mà nó được huấn luyện. Bản chất mô hình không hiểu mà nó đưa ra dự đoán từ chỉ dựa vào xác suất.
+
+| Ảnh 1 | Ảnh 2 | 
+| -------- | -------- |
+| ![image](llm_1.png)     | ![image](llm_2.png)    |
+
+Mô hình ngôn ngữ (LM) hoạt động bằng cách học từ dữ liệu văn bản và sau đó sử dụng thông tin đó để dự đoán từ tiếp theo trong một chuỗi văn bản. Đặc biệt là với những loại dữ liệu (Dataset) khác nhau thì sẽ tạo ra LM khác nhau.
+
+Như vậy, một Large Langue Model (LLM) là một loại mô hình học máy có khả năng thực hiện nhiều nhiệm vụ xử lý ngôn ngữ tự nhiên (Natural Laguage Processing ) như tạo và phân loại văn bản, trả lời câu hỏi trong một cuộc đối thoại, và dịch văn bản từ một ngôn ngữ sang ngôn ngữ khác. LLM chính là LM nhưng được huấn luyện với lượng dữ liệu khổng lồ, sử dụng phương pháp học khác nhau để dự đoán token-từ, cụm từ, địa điểm, ... tiếp theo trong một câu, dựa trên ngữ cảnh xung quanh. Quá trình này được lặp đi lặp lại cho đến khi mô hình đạt được một mức độ chính xác chấp nhận được.
+
+**Language Model lớn đến mức nào thì được gọi là Large Language Model ?**
+
+Có 2 thuộc tính chính để phân biệt LLM với các mô hình ngôn ngữ khác: một là định lượng, hai là định tính.
+
+- Về mặt định lượng, sự khác biệt ở đây là số lượng tham số được sử dụng trong mô hình. Các LLM hiện tại thường có kích thước > 1B param. Thông tin này được tham khảo từ Open LLM Leaderboard, với model nhỏ nhất trong leaderboard có kích thước 1.1B và lớn nhất là 180B.
+- Về mặt định tính, khi một mô hình ngôn ngữ có kích thước "lớn" đến một mức nhất định nào đó, nó sẽ thể hiện một số khả năng nổi bật (zero-shot learning abilities). Đây là những thuộc tính chỉ xuất hiện khi một mô hình ngôn ngữ đạt đến kích thước đủ lớn, khả năng này sẽ dần mạnh hơn khi kích thước model được tăng lên (xét trong trường hợp data và training strategy không đổi)
+
+Khi một LLM đã được huấn luyện, nó có thể được điều chỉnh chuyên biệt cho một loạt các nhiệm vụ NLP, bao gồm:
+
+- Xây dựng trò chuyện với chatbot như ChatGPT.
+- Tạo văn bản cho mô tả sản phẩm, bài đăng trên blog và bài báo.
+- Trả lời các câu hỏi thường gặp (FAQs) và điều hướng các yêu cầu của khách hàng đến người hoặc bộ phận phù hợp nhất: hầu hết các doanh nghiệp lớn rất quan tâm đến vấn đề này, nhằm cắt giảm số lượng nhân sự cũng như là thời gian hỗ trợ khách hàng.
+- Phân tích/Phân loại phản hồi của khách hàng từ email, bài đăng trên mạng xã hội và đánh giá sản phẩm: phân loại phàn nàn hay góp ý của khách hàng với sản phẩm của mình đã không còn là vấn đề xa lạ với hâù hết các doanh nghiệp, việt tóm tắt và phân loại chúng không phải là một vấn đề dễ dàng, hiện tại nhờ LLM chúng ta đã có thể không cần phải làm các công việc này bằng tay, mất khá nhiều thời gian và công sức.
+- Dịch nội dung kinh doanh sang các ngôn ngữ khác nhau.
+
+## 6.2 Cách huấn luyện LLM 
+Hầu hết các LLM được huấn luyện trước trên một tập dữ liệu lớn, đa dạng và có mục đích tổng quát (có thể hiểu là nó bao gồm tất cả các khía cạnh của cuộc sống, không chuyên biệt cho bất cứ ngành nghề nào như kinh tế, công nghệ , ...).
+
+Mục đích của việc huấn luyện trước là để mô hình học các tính năng cao cấp - high-level features (bạn có thể hiểu đơn giản nó là học các giá trị cốt lõi trước) , sau đó nó sẽ được chuyển sang giai đoạn tinh chỉnh cho các nhiệm vụ cụ thể.
+
+Quá trình huấn luyện của một mô hình ngôn ngữ lớn bao gồm:
+
+1. Tiền xử lý dữ liệu văn bản để chuyển đổi nó thành biểu diễn số có thể được đưa vào mô hình (chuyển đổi kí tự sang dạng số là bước làm bắt buộc )
+2. Gán các giá trị ngẫu nhiên vào các tham số của mô hình.
+3. Đưa biểu diễn số của dữ liệu văn bản vào mô hình.
+4. Sử dụng hàm mất mát (loss function) để đo lường sự khác biệt giữa các đầu ra của mô hình và từ tiếp theo (next word)  thực tế trong một câu, hiểu đơn giản là mô hình sẽ che lại các từ thực tế có trong các đoạn văn bản đầu vào và dự đoán nó, sau khi dự đoán xong nó sẽ so sánh với thực tế những từ đã bị che trước đó xem có ổn hay không. Khi quá trình dự đoán này được lặp đi lặp lại sẽ giúp chúng tạo ra được nguyên cả một đoạn văn bản (autoregressive generation)
+5. Tối ưu hóa các tham số của mô hình để giảm thiểu mất mát, tức là kết quả dự đoán phải càng ngày càng đúng thì mới được xem là càng tối ưu.
+6. Lặp lại quá trình cho đến khi các đầu ra của mô hình đạt đến một mức độ chính xác chấp nhận được.
+
+## 6.3 Ứng dụng của LLM 
+- **Chăm sóc sức khỏe:** LLM hỗ trợ xử lý và tìm hiểu lượng lớn tài liệu y khoa, hỗ trợ chẩn đoán và lập kế hoạch điều trị.
+
+- **Tài chính:** Công nghệ này đang cách mạng hóa tài chính bằng cách tự động hóa đánh giá rủi ro, tư vấn tài chính cá nhân hóa và tăng cường hệ thống phát hiện gian lận thông qua nhận dạng mẫu và phát hiện điểm bất thường.
+
+- **Pháp lý:** Lọc các hồ sơ vụ án và tài liệu pháp lý nhằm hỗ trợ nghiên cứu và soạn thảo hợp đồng, tiết kiệm thời gian và giảm thiểu sai sót của con người.
+
+- **Dịch vụ khách hàng:** Chatbot và trợ lý ảo cung cấp dịch vụ khách hàng 24/7, xử lý các yêu cầu và đưa ra đề xuất được cá nhân hóa, cải thiện đáng kể trải nghiệm của khách hàng.
+
+- **Sáng tạo nội dung:** LLM tạo ra các bài viết, báo cáo với hình ảnh và video chân thực.
+
+- **Giáo dục:** LLM có thể cá nhân hoá, tạo ra các bài thực hành và nội dung giáo dục, nâng cao trải nghiệm học tập.
+
+- **Giải trí và Nghệ thuật:** Tạo ra âm nhạc, nghệ thuật và văn học, cung cấp công cụ cho các nghệ sĩ khám phá các hình thức sáng tạo mới và cho ngành giải trí sản xuất nội dung mới lạ.
+
+## 6.4 Finetuning
+Về lý thuyết có thể dùng 1 LLM cho tất cả các task mà chúng ta cần tuy nhiên tinh chỉnh (finetune) sẽ cho ra hiệu quả tốt hơn đặc biệt là đối với những lĩnh vực đặc thù cần kiến thức và từ ngữ chuyên môn sâu. Với những mô hình LLm cơ bản thì nó sẽ không hiểu những kiến thức và nghiệp vụ trong các lĩnh vực chuyên sâu như y dược, ngân hàng,... mà chỉ có hiểu biết với các kiến thức cơ bản của cuộc sống. Vì thế Finetuning chính là tạo ra mô hình LLM riêng biệt chuyên sâu về một lĩnh vực nào đó.
+
+Finetuning chính là ta sẽ lấy một mô hình pre-train và tinh chỉnh tham số của mô hình đó để tạo ra một mô hình LLM chuyên sâu về một lĩnh vực. 
+
+![image](fine.png)
+
+Một quy trình Finetune cơ bản gồm 4 bước:
+1. Chọn một task fine-tuning: hỏi đáp về nội quy lao động, về quy định sinh viên…
+2. Chuẩn bị cơ sở dữ liệu (dataset): nội quy lao động, bộ câu hỏi - trả lời…
+3. Chọn một model gốc: GPT, LLAMA, PhoGPT…
+4. Thực hiện Finetune mô hình và đánh giá mô hình.
+
+
+# 7. Gemini 1.0
+
+**Gemini 1.0** [[10]](https://storage.googleapis.com/deepmind-media/gemini/gemini_1_report.pdf) là phiên bản đầu tiên trong dòng mô hình đa phương tiện cực kỳ mạnh mẽ của Google, được phát triển nhằm mục đích hỗ trợ hiểu biết và lý luận trên nhiều phương tiện như hình ảnh, âm thanh, video và văn bản. Mô hình này được thiết kế để tương thích với nhiều loại ứng dụng khác nhau, từ những nhiệm vụ phức tạp đến các ứng dụng trên thiết bị di động có giới hạn về bộ nhớ.
+Các phiên bản của Gemini
+
+**Gemini 1.0** bao gồm ba kích cỡ chính để hỗ trợ một loạt các ứng dụng:
+
+- **Ultra**: Mô hình mạnh nhất, cung cấp hiệu suất hàng đầu cho các nhiệm vụ phức tạp cao, bao gồm suy luận và nhiệm vụ đa phương tiện.
+- **Pro**: Mô hình tối ưu về chi phí và độ trễ, cung cấp hiệu suất đáng kể trên nhiều nhiệm vụ. Mô hình này thể hiện khả năng suy luận mạnh mẽ và khả năng đa phương tiện rộng.
+- **Nano**: Mô hình hiệu quả nhất, được thiết kế để chạy trên thiết bị. Chúng tôi đã huấn luyện hai phiên bản của Nano, với 1.8 tỷ (Nano-1) và 3.25 tỷ (Nano-2) tham số, nhắm đến các thiết bị có bộ nhớ thấp và cao tương ứng. Chúng được chưng cất từ các mô hình Gemini lớn hơn và được lượng tử hóa 4-bit để triển khai.
+
+## 7.1 Kiến trúc Mô hình
+
+**Gemini 1.0** xây dựng dựa trên kiến trúc của bộ giải mã Transformer, được cải tiến để cho phép huấn luyện ổn định trên quy mô lớn và tối ưu hóa cho suất suy luận trên các đơn vị xử lý Tensor của Google. Mô hình được huấn luyện để hỗ trợ chiều dài ngữ cảnh lên đến 32k, sử dụng các cơ chế chú ý hiệu quả.
+
+Các mô hình Gemini được huấn luyện để xử lý đầu vào văn bản xen kẽ với nhiều loại đầu vào âm thanh và hình ảnh, như hình ảnh tự nhiên, biểu đồ, ảnh chụp màn hình, PDF và video. Chúng có thể tạo ra đầu ra văn bản và hình ảnh. Mã hóa hình ảnh của các mô hình Gemini lấy cảm hứng từ các công trình nền tảng của Google trên Flamingo, CoCa và PaLI, với điểm khác biệt quan trọng là các mô hình này là đa phương tiện ngay từ đầu và có thể xuất ra hình ảnh bằng các token hình ảnh rời rạc.
+
+Hiểu biết video được thực hiện bằng cách mã hóa video thành chuỗi các khung hình trong cửa sổ ngữ cảnh lớn. Các khung hình hoặc hình ảnh có thể được xen kẽ một cách tự nhiên với văn bản hoặc âm thanh như một phần của đầu vào mô hình. Các mô hình có thể xử lý độ phân giải đầu vào biến thiên để tập trung nhiều tính toán hơn vào các nhiệm vụ đòi hỏi sự hiểu biết tinh tế.
+
+
+![img](https://www.promptingguide.ai/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fgemini-architecture.c47c421f.png&w=2048&q=75)
+
+## 7.2 Huấn luyện và Ứng dụng
+
+Sau quá trình huấn luyện trên quy mô lớn, mô hình được tinh chỉnh sau huấn luyện để cải thiện chất lượng chung, tăng cường các khả năng mục tiêu, và đảm bảo các tiêu chí về sự phù hợp và an toàn được đáp ứng. **Gemini 1.0** đã đạt được các kết quả hàng đầu trong nhiều tiêu chuẩn đánh giá, điển hình là lĩnh vực hiểu biết ngôn ngữ, xử lý âm thanh và hiểu biết video. Mô hình cung cấp một bước tiến lớn trong việc lý luận đa phương tiện.
+
+## 7.3 Cải tiến và Ứng dụng Công nghệ
+
+**Gemini 1.0** không chỉ là một bước tiến trong lý luận đa phương tiện mà còn trong cách mà nó áp dụng các công nghệ tiên tiến để xử lý và hiểu các loại dữ liệu khác nhau. Mô hình này sử dụng các cải tiến trong kiến trúc mạng neural, như cơ chế chú ý đa truy vấn, cho phép nó hiểu và phản hồi một cách chính xác hơn đến các yêu cầu phức tạp.
+
+### 7.3.1 Tính Năng Xử Lý Âm Thanh
+
+Gemini tích hợp tính năng xử lý âm thanh thông qua mô hình Universal Speech Model (USM), cho phép nó giải mã các tín hiệu âm thanh với độ chính xác cao. Điều này là cực kỳ hữu ích trong các ứng dụng như hỗ trợ tự động, nhận dạng giọng nói, và thậm chí là dịch tự động giữa các ngôn ngữ khác nhau.
+
+### 7.3.2 Tính Năng Hiểu Biết Hình Ảnh
+
+Với khả năng mã hóa video thành chuỗi các khung hình, Gemini 1.0 có thể hiểu các chuỗi video phức tạp và trích xuất thông tin từ chúng. Tính năng này mở ra khả năng ứng dụng trong các lĩnh vực như giám sát an ninh, phân tích hành vi, và thậm chí là tạo nội dung tự động cho các nền tảng truyền thông.
+
+### 7.3.3 Tính Năng Tương Tác Đa Phương Tiện
+
+Các mô hình Gemini có thể xử lý đầu vào và tạo ra đầu ra bao gồm văn bản và hình ảnh, làm cho chúng trở thành công cụ lý tưởng cho các ứng dụng như trợ lý ảo thông minh và tạo nội dung đa phương tiện. Khả năng này cũng cho phép Gemini tích hợp mượt mà hơn với các công nghệ khác, tăng cường khả năng tương tác và phản hồi của nó trong môi trường số.
+
+## 7.4 Tương Lai của Gemini
+
+Với những tiến bộ đáng kể trong khả năng xử lý đa phương tiện và sự hỗ trợ cho các tác vụ AI phức tạp, Gemini 1.0 đã đặt nền móng cho thế hệ tiếp theo của các mô hình AI. Tiềm năng để mở rộng và tinh chỉnh mô hình này cho các ứng dụng cụ thể hứa hẹn sẽ mở ra các cánh cửa mới trong nghiên cứu và phát triển AI, có thể dẫn đến các đột phá mới trong cách chúng ta tương tác với và thông qua công nghệ.
+
+# 8. Sản phẩm của nhóm
+
+
+## 8.1 Tổng quan sản phẩm
+
+Nhóm đã xây dựng một website chatbot với mục đích chính là hỗ trợ người dùng việc giải toán học tên là **Math Solving Assistant**. Ngoài ra, sản phẩm còn hỗ trợ người dùng trong việc trò chuyện với chatbot, phân tích ảnh. Sản phẩm được xây dựng chủ yếu nhờ API của Gemini, viết bằng ngôn ngữ *Python* và sử dụng thư viện *Streamlit* để xây dựng giao diện người dùng. Sản phẩm đã được triển khai trên tên miền [mathsolving-chatbot.streamlit.app](https://mathsolving-chatbot.streamlit.app/).
+
+Đây là hỉnh ảnh giao diện của sản phẩm:
+
+![Homepage](https://i.imgur.com/m3dUJvr.png?1)
+
+- Bên trái là menu của sản phẩm cho phép người dùng chuyển đổi giữa các chức năng khác nhau của sản phẩm.
+
+- Ớ dưới menu là phần tải ảnh lên của tính năng tích hợp OCR.
+
+- Bên phải là giao diện chính của website cho phép người dùng tương tác, trò chuyện, hỏi đáp với chatbot.
+
+## 8.2 Chức năng của sản phẩm
+
+Sản phẩm của nhóm bao gồm 3 mô hình chính:
+
+### **Chat với Gemini**: 
+
+Ứng dụng sẽ gọi API của Gemini để trả lời và trò chuyện cùng với người dùng. Kèm với đó, nhóm có tích hợp thêm chức năng OCR để người dùng có thể đưa vào các câu hỏi dạng hình ảnh và ứng dụng sẽ tự chuyển thành văn bản để Gemini trả lời. Do đó người dùng có thể giải quyết được các vấn đề như trò chuyện, hỏi đáp, dịch, tóm tắt văn bản, v.v.
+
+- Đây là hình ảnh của chức năng chat với Gemini:
+
+![Imgur](https://i.imgur.com/JFUUFX5.png)
+
+- Và đây là hình ảnh của chức năng tích hợp OCR với hình ảnh đầu vào là một đề bài toán học:
+
+![Imgur](https://i.imgur.com/OpheB7q.png)
+
+- Ta có thể thấy với mô hình cơ bản của Gemini Pro 1.0, chức năng chatbot đã hoạt động khá tốt, với nhiệm vụ giải toán, mô hình cũng thực hiện khá tốt, tuy nhiên vẫn còn một số vấn đề như mô hình vẫn cung cấp kết quả, cách giải không chính xác, phản hồi của mô hình không ổn định, mỗi lúc một đáp án khác nhau... Do đó, nhóm sẽ thực hiện finetune lại mô hình Gemini trên bộ dữ liệu về toán học để cải thiện chất lượng phản hồi của mô hình. Chi tiết về chức năng này sẽ được trình bày ở phần sau.
+
+
+### **Phân tích hình ảnh**: 
+
+Đây là một tính năng tiện ích, bổ sung để hỗ trợ người dùng. Dựa vào API của Gemini Pro Vision, tính năng này cho phép người dùng có thể tải các ảnh lên và sản phẩm sẽ mô tả nội dung của ảnh đó.
+
+- Đây là hình ảnh của chức năng phân tích ảnh:
+
+![Imgur](https://i.imgur.com/vTUGMTY.png)
+
+### **Hỗ trợ giải toán**: 
+
+Đây là chức năng chính của sản phẩm. Như đã nói ở trên, với mô hình Gemini Pro 1.0, chức năng này đã hoạt động khá tốt, tuy nhiên vẫn còn một số vấn đề về chất lượng phản hồi của mô hình. Do đó, nhóm sẽ thực hiện finetune lại mô hình Gemini trên bộ dữ liệu về toán học để cải thiện chất lượng phản hồi của mô hình.
+
+- Bộ dữ liệu sẽ được sử dụng để finetune: [MetaMathQA-40K](https://huggingface.co/datasets/meta-math/MetaMathQA-40K). Bộ dữ liệu gồm 40,000 câu hỏi toán học và câu trả lời tương ứng của [MetaMath](https://huggingface.co/meta-math) được nhóm thu thập từ Huggingface.
+
+- Quá trình finetune sẽ được thực hiện trên Vertex AI của Google Cloud Platform.
+
+    - Nhóm chuyển đổi bộ dữ liệu thành file jsonl để tải lên Vertex AI.
+
+    - Tạo tuned-model trên Vertex AI và thực hiện finetune
+
+    ![Imgur](https://i.imgur.com/9n0yb17.png)
+
+    ![Imgur](https://i.imgur.com/cHGLaC4.png)
+
+    - Đây là quá trình finetune trên Vertex AI:
+
+    ![Imgur](https://i.imgur.com/dmWIUU1.png)
+
+- Đây là hình ảnh của chức năng hỗ trợ giải toán:
+
+![Imgur](https://i.imgur.com/YsgCScz.png)
+
+**So sánh kết quả giữa mô hình cũ và mô hình sau khi finetune**
+
+<img src="https://i.imgur.com/R7YQBUM.png" alt="Old Model" style="width: 45%; display: inline-block; margin-right: 5px;">
+<img src="https://i.imgur.com/grzXGdz.png" alt="Fine-tuned Model" style="width: 45%; display: inline-block;">
+
+
+- Với ví dụ như trên, ta có thể thấy rằng mô hình sau khi finetune đã cung cấp kết quả chính xác hơn so với mô hình ban đầu. Và qua nhiều lần thử nhóm đã thấy rằng mô hình sau khi finetune cũng ổn định và cung cấp kết quả chính xác ở các câu hỏi khác
+
+
+## 8.3 Đánh giá sản phẩm
+
+1. Ưu điểm: 
+    - Website cung cấp nhiều chức năng hữu ích, giúp người dùng giải quyết nhiều vấn đề khác nhau, từ việc trò chuyện, hỏi đáp, dịch, tóm tắt văn bản, v.v. đến việc phân tích ảnh và giải toán học. 
+    - Giao diện trực quan, dễ sử dụng, giúp người dùng dễ dàng tương tác với sản phẩm.
+    - Tốc độ phản hồi nhanh nhờ sử dụng API của Gemini, giúp người dùng có trải nghiệm tốt khi sử dụng sản phẩm.
+    - Website đã được triển khai trên tên miền riêng, giúp người dùng dễ dàng truy cập và sử dụng sản phẩm.
+
+2. Nhược điểm: 
+
+    - Công cụ nhận dạng ảnh còn chưa hoàn thiện, đôi khi xử lý văn bản hình ảnh bị thiếu, xót chữ cái, dấu câu khiến cho việc trả lời các câu hỏi hình ảnh gặp khó khăn.
+
+    - Website khi triển khai trên tên miền riêng thì tạm thời chưa sử dụng được chatbot giải toán vì chính sách bảo mật dữ liệu (đã dùng cho finetune mô hình) từ Google Cloud Platform, nhóm sẽ cập nhật sau.
+
+## 8.4 Khó khăn và hướng phát triển
+
+1. Khó khăn: 
+
+Khó khăn chính khi xây dựng sản phẩm là việc tinh chỉnh mô hình Gemini để cải thiện chất lượng phản hồi của mô hình trong việc giải toán học. 
+
+- Nhóm gặp khó khăn trong quá trình tìm hiểu cách sử dụng Vertex AI, đây là nền tảng mới mà nhóm chưa từng sử dụng trước đó.
+
+- Khó khăn trong việc tinh chỉnh mô hình, do đó nhóm đã phải tìm hiểu và thử nghiệm nhiều lần để có thể tinh chỉnh mô hình một cách hiệu quả với các cấu hình phù hợp (learning rate, số lượng epoch, v.v.). Do đó, việc tinh chỉnh mô hình mất nhiều thời gian và công sức.
+
+2. Hướng phát triển:
+
+- Trong tương lai nếu có thể nhóm hướng đến việc tự xây dựng mô hình chatbot và mô hình giải toán học từ đầu thay vì sử dụng API của Gemini. Điều này giúp nhóm có thể tinh chỉnh mô hình một cách linh hoạt và dễ dàng hơn.
+
+- Thêm tính năng prompt template giúp người dùng có thể tạo ra các câu hỏi một cách dễ dàng và nhanh chóng.
+
+- Phát triển các tính năng nhận phản hồi từ người dùng để cải thiện chất lượng sản phẩm website
+
+
+# 9. Tài liệu tham khảo
+[1]. [ThaoPP. (2022b, July 8). Xử lý ngôn ngữ tự nhiên: Công nghệ giúp máy tính hiểu và giao tiếp với con người - FPT Digital. FPT Digital.](https://digital.fpt.com/dxarticles/xu-ly-ngon-ngu-tu-nhien.html)
+
+[2]. [Xử lý ngôn ngữ tự nhiên: Bài toán & công cụ bạn nên biết.](https://tuanvanle.wordpress.com/2022/08/15/xu-ly-ngon-ngu-tu-nhien-bai-toan-cong-cu-ban-nen-biet/)
+
+[3]. [Nam, P. (2024, May 3). Tổng quan về Chatbot. Viblo.](https://viblo.asia/p/tong-quan-ve-chatbot-yMnKMByaZ7P)
+
+[4]. [VNTechies. (2020, November 20). Tất cả những gì bạn cần biết về Chatbot. VNTechies Dev Blog 🇻🇳 - Kho Tài Nguyên Về Cloud ☁️ / DevOps 🚀.](https://vntechies.dev/blog/solutions/tat-ca-nhung-gi-ban-can-biet-ve-chatbot)
+
+[5]. [Vaswani, Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., N. Gomez, A., Kaiser, L., & Polosukhin. (2017). Attention is all you need.](https://proceedings.neurips.cc/paper_files/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf.) 
+
+[6]. [LAMDA: Language Models for Dialog Applications. (n.d.). Ar5iv.](https://ar5iv.labs.arxiv.org/html/2201.08239) 
+
+[7]. [About Google DeepMind. (n.d.). Google DeepMind.](https://deepmind.google/about/)
+
+[8]. [Vu, N. (2024, April 26). Large Language Model là gì ? Giải thích dễ hiểu. 200Lab Blog.](https://200lab.io/blog/large-language-model-la-gi/)
+
+[9]. [Gemini Team, Google1. (n.d.). Gemini: A Family of Highly Capable Multimodal Models.](https://storage.googleapis.com/deepmind-media/gemini/gemini_1_report.pdf)
+
+[10]. [An Overview of the Tesseract OCR Engine - Ray Smith](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/33418.pdf)
+
+[11]. [Cơ chế hoạt động của Tesseract OCR - Quang Tran's Blogs](https://tnquangblog.wordpress.com/2017/12/11/co-che-hoat-dong-cua-tesseract-ocr/)
